@@ -1,0 +1,186 @@
+* {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  /* Base defaults (can be overridden by .light/.dark) */
+  --bg-color: #242424;
+  --text-color: rgba(255, 255, 255, 0.87);
+
+  --primary-color: #646cff;
+  --primary-color-alpha: rgba(100, 108, 255, 0.25);
+  --primary-color-hover: rgba(100, 108, 255, 0.5);
+
+  --button-bg: #1a1a1a;
+  --button-hover: #646cff;
+}
+
+.light {
+  /* Main Backgrounds */
+  --bg-color: #f0f2f5;
+  /* Slightly grayer for better contrast with cards */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f7fafc;
+
+  /* Text */
+  --text-color: #213547;
+  --text-primary: #1a202c;
+  --text-secondary: #718096;
+
+  /* Cards & Containers */
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
+  --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+
+  /* Sidebar */
+  --sidebar-bg: #ffffff;
+  --sidebar-border: #e2e8f0;
+  --sidebar-text: #4a5568;
+  --sidebar-text-hover: #1a202c;
+  --sidebar-item-hover: #edf2f7;
+  --sidebar-item-active: #e2e8f0;
+
+  /* Header */
+  --header-bg: rgba(255, 255, 255, 0.9);
+  --header-border: #e2e8f0;
+
+  /* Inputs */
+  --input-bg: #ffffff;
+  --input-border: #e2e8f0;
+  --input-border-focus: #646cff;
+  --input-placeholder: #a0aec0;
+
+  /* Tables */
+  --table-header-bg: #ffffff;
+  /* Or slightly gray */
+  --table-header-text: #718096;
+  --table-border: #e2e8f0;
+  --table-row-hover: #f7fafc;
+  --table-row-bg: #ffffff;
+
+  /* Borders */
+  --border-color: #e2e8f0;
+
+  /* Primary */
+  --primary-color: #3182ce;
+  /* A nice blue */
+  --secondary-color: #718096;
+}
+
+
+.dark {
+  /* Main Backgrounds */
+  --bg-color: #0f0f0f;
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+
+  /* Text */
+  --text-color: rgba(255, 255, 255, 0.87);
+  --text-primary: #ffffff;
+  --text-secondary: #a0aec0;
+  /* Slightly lighter gray for dark mode readability */
+
+  /* Cards & Containers */
+  --card-bg: #1e1e1e;
+  --card-border: #333333;
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+
+  /* Sidebar */
+  --sidebar-bg: #000000;
+  --sidebar-border: #333333;
+  --sidebar-text: #a0aec0;
+  --sidebar-text-hover: #ffffff;
+  --sidebar-item-hover: #2d3748;
+  --sidebar-item-active: #2d3748;
+
+  /* Header */
+  --header-bg: rgba(0, 0, 0, 0.8);
+  --header-border: #333333;
+
+  /* Inputs */
+  --input-bg: #2b2b2b;
+  --input-border: #444444;
+  --input-border-focus: #646cff;
+  --input-placeholder: #718096;
+
+  /* Tables */
+  --table-header-bg: #1e1e1e;
+  --table-header-text: #a0aec0;
+  --table-border: #333333;
+  --table-row-hover: #2d3748;
+  --table-row-bg: #1e1e1e;
+
+  /* Borders */
+  --border-color: #333333;
+
+  /* Primary */
+  --primary-color: #646cff;
+  --secondary-color: #a0aec0;
+}
+
+
+body {
+  margin: 0;
+  display: block;
+  min-width: 320px;
+  min-height: 100vh;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  transition: background-color 0.25s, color 0.25s;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--button-bg);
+  cursor: pointer;
+  transition: border-color 0.25s;
+  color: var(--text-color);
+}
+
+button:hover {
+  border-color: var(--button-hover);
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+a {
+  font-weight: 500;
+  color: var(--primary-color);
+  text-decoration: inherit;
+}
+
+a:hover {
+  color: var(--primary-color-hover);
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
