@@ -29,5 +29,10 @@ export const orderService = {
     // Map animal to remove from order item
     removeAnimalToOrderItem: async (animalId, orderItemId) => {
         return await http.patch(`/api/v1/track/animals/un-map-animal-from-order-item?animal_id=${animalId}&order_item_id=${orderItemId}`);
+    },
+
+    //Update Order status
+    updateOrderStatus: async (id, status) => {
+        return await http.patch(`/api/v1/orders/status/${id}?payload=${status}`);
     }
 };

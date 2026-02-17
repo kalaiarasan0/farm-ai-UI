@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Plus, Trash } from 'lucide-react';
+import { ArrowLeft, Plus, Trash, Pencil } from 'lucide-react';
 import { orderService } from '../services/orderService';
 import { animalService } from '../services/animalService';
 import capitalizeFirstLetter from '../utils/common_functions';
@@ -208,6 +208,8 @@ const OrderDetails = () => {
     const [modalData, setModalData] = useState({ animalId: '', orderItemId: '' });
     const [animalLookups, setAnimalLookups] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [updateOrderStatus, setUpdateOrderStatus] = useState('');
+    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
 
     const fetchOrder = useCallback(async () => {
         setLoading(true);
@@ -234,6 +236,7 @@ const OrderDetails = () => {
             if (modalData.orderItemId) {
                 params.filter = 'order_item';
                 params.order_item_id = modalData.orderItemId;
+                params.animal_status = 'in_inventory';
             }
             const data = await animalService.getLookup(query, params);
             setAnimalLookups(data);
@@ -293,6 +296,23 @@ const OrderDetails = () => {
             // console.error("Error removing animal:", error);
             toastEventEmitter.emit(`${error}`, "error");
         }
+    };
+
+    const handleUpdateOrderStatus = async (e) => {
+        e.preventDefault();
+        try {
+            await orderService.updateOrderStatus(id, updateOrderStatus);
+            toastEventEmitter.emit("Order status updated successfully", "success");
+            setIsUpdateModalOpen(false); // Close the modal
+            fetchOrder(); // Refresh order details
+        } catch (error) {
+            // console.error("Error updating order status:", error);
+            toastEventEmitter.emit(`${error}`, "error");
+        }
+    };
+
+    const handleUpdateOrderStatusChange = (e) => {
+        setUpdateOrderStatus(e.target.value);
     };
 
     if (loading) {
@@ -362,7 +382,10 @@ const OrderDetails = () => {
                         <Value>{order.tax}</Value>
                     </Field>
                     <Field>
-                        <Label>Status</Label>
+                        <Label>Status <Pencil size={12} style={{ marginLeft: '0.5rem', cursor: 'pointer' }} onClick={() => {
+                            setUpdateOrderStatus(order.order_status);
+                            setIsUpdateModalOpen(true);
+                        }} /></Label>
                         <Value>{capitalizeFirstLetter(order.order_status)}</Value> {/* Status not in API, placeholder */}
                     </Field>
                 </Grid>
@@ -579,7 +602,7 @@ const OrderDetails = () => {
                             <option value="">Select an animal</option>
                             {animalLookups.map(animal => (
                                 <option key={animal.id} value={animal.id}>
-                                    {animal.tag_id} - {animal.animal_name}
+                                    {animal.tag_id} - {animal.category_name}
                                 </option>
                             ))}
                         </Select>
@@ -591,6 +614,39 @@ const OrderDetails = () => {
                         </Button>
                         <Button type="submit" disabled={!modalData.animalId}>
                             Save
+                        </Button>
+                    </div>
+                </form>
+            </Modal>
+
+            {/* Update Order Status Modal */}
+            <Modal
+                isOpen={isUpdateModalOpen}
+                onClose={() => setIsUpdateModalOpen(false)}
+                title="Update Order Status"
+            >
+                <form onSubmit={handleUpdateOrderStatus} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                    <Field>
+                        <Label>Status</Label>
+                        <Select
+                            value={updateOrderStatus}
+                            onChange={handleUpdateOrderStatusChange}
+                            required
+                        >
+                            <option value="">Select Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="in_transit">In Transit</option>
+                            <option value="delivered">Delivered</option>
+                            <option value="cancelled">Cancelled</option>
+                        </Select>
+                    </Field>
+
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginTop: '1rem' }}>
+                        <Button type="button" onClick={() => setIsUpdateModalOpen(false)} style={{ backgroundColor: 'var(--bg-secondary)', color: 'var(--text-primary)' }}>
+                            Cancel
+                        </Button>
+                        <Button type="submit">
+                            Update
                         </Button>
                     </div>
                 </form>
